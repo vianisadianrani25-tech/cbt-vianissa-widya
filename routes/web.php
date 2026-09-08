@@ -9,7 +9,16 @@ use App\Http\Controllers\SoalController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\ProfileController;
 
-Route::redirect('/', '/login')->name('home');
+Route::view('/', 'welcome')->name('home');
+
+Route::middleware('auth')->get('/dashboard', function () {
+    return match (auth()->user()->role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'guru' => redirect()->route('guru.dashboard'),
+        'siswa' => redirect()->route('siswa.dashboard'),
+        default => redirect()->route('profile.edit'),
+    };
+})->name('dashboard');
 
 /*
 |------------------------------------------------------------------
