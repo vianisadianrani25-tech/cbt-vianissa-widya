@@ -75,6 +75,13 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center gap-2 px-3 py-1.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 focus:outline-none transition duration-150 shadow-xs">
+                            @if (Auth::user()->photo)
+                                <img src="{{ Auth::user()->photoUrl() }}" alt="{{ Auth::user()->name }}" class="h-7 w-7 rounded-full object-cover ring-1 ring-slate-200">
+                            @else
+                                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-100 text-xs font-extrabold text-indigo-700 ring-1 ring-indigo-200">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </span>
+                            @endif
                             <span>{{ Auth::user()->name }}</span>
                             <svg class="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />

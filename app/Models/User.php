@@ -47,4 +47,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role === 'siswa';
     }
+    public function photoUrl(): string
+{
+    if ($this->photo) {
+        return asset('storage/' . $this->photo);
+    }
+
+    return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=0d9488&color=fff';
+}
 }

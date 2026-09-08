@@ -175,7 +175,6 @@
                                    autofocus
                                    autocomplete="username"
                                    placeholder="Enter your email"
-                                   :disabled="isLoading"
                                    :class="{
                                        'border-rose-400 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-500/20': emailTouched && !isEmailValid,
                                        'border-slate-200 bg-slate-50 focus:bg-white focus:border-indigo-600 focus:ring-indigo-600/20': !emailTouched || isEmailValid
@@ -218,7 +217,6 @@
                                    required
                                    autocomplete="current-password"
                                    placeholder="Enter your password"
-                                   :disabled="isLoading"
                                    :class="{
                                        'border-rose-400 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-500/20': passwordTouched && !isPasswordValid,
                                        'border-slate-200 bg-slate-50 focus:bg-white focus:border-indigo-600 focus:ring-indigo-600/20': !passwordTouched || isPasswordValid

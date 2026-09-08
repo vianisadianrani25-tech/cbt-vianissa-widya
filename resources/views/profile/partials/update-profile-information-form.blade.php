@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -47,6 +47,35 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="photo" :value="__('Profile Photo')" />
+
+            <div class="mt-2 flex items-center gap-4">
+                <div style="width: 64px; height: 64px; min-width: 64px;" class="shrink-0 overflow-hidden rounded-full bg-gray-100 ring-2 ring-gray-200">
+                    <img
+                        id="photo-preview"
+                        src="{{ $user->photo ? $user->photoUrl() : '' }}"
+                        alt="{{ $user->name }}"
+                        class="h-full w-full object-cover {{ $user->photo ? '' : 'hidden' }}"
+                    >
+                    <div
+                        id="photo-fallback"
+                        class="flex h-full w-full items-center justify-center text-xl font-semibold text-gray-500 {{ $user->photo ? 'hidden' : '' }}"
+                    >
+                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                    </div>
+                </div>
+
+                <div class="flex-1">
+                    <input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-md file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100" />
+                    <p class="mt-1 text-xs text-gray-500">JPG, PNG, atau WEBP. Maksimal 2 MB.</p>
+                    <p id="photo-client-error" class="mt-1 hidden text-xs font-semibold text-red-600">Ukuran foto maksimal 2 MB.</p>
+                    </div>
+                </div>
+
+            <x-input-error class="mt-2" :messages="$errors->get('photo')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -61,4 +90,29 @@
             @endif
         </div>
     </form>
+
+    <script>
+        document.getElementById('photo')?.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('photo-preview');
+            const fallback = document.getElementById('photo-fallback');
+            const error = document.getElementById('photo-client-error');
+
+            if (!file) {
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                event.target.value = '';
+                error.classList.remove('hidden');
+                return;
+            }
+
+            error.classList.add('hidden');
+
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove('hidden');
+            fallback.classList.add('hidden');
+        });
+    </script>
 </section>
